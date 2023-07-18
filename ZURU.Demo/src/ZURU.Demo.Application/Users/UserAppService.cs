@@ -1,17 +1,22 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyModel.Resolution;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Uow;
 using ZURU.Demo.Domain;
 
 namespace ZURU.Demo.Application
 {
+    [AllowAnonymous]
     public class UserAppService : DemoAppService, IUserAppService
     {
         private readonly IUserManager _userManager;
         private readonly IRepository<User> _userRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         public UserAppService(
-            IUserManager userManager, 
+            IUserManager userManager,
             IRepository<User> userRepository,
             IUnitOfWorkManager unitOfWorkManager)
         {
@@ -20,6 +25,7 @@ namespace ZURU.Demo.Application
             _unitOfWorkManager= unitOfWorkManager;
         }
 
+        [HttpGet("api/user/register")]
         public async Task RegisterAsync(RegisterUserDto dto)
         {
             //TODO:参数验证

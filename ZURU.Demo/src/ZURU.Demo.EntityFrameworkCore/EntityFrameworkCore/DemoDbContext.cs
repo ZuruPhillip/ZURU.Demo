@@ -3,6 +3,8 @@ using Volo.Abp.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ZURU.Demo.Domain;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using ZURU.Demo.Domain.Books;
+using ZURU.Demo.EntityFrameworkCore.EntityFrameworkCore.ModelBuilders;
 
 namespace ZURU.Demo.EntityFrameworkCore;
 
@@ -12,6 +14,7 @@ public class DemoDbContext : AbpDbContext<DemoDbContext>
     public DbSet<Permission> Permissions { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Book> Books { get; set; }
 
     public DemoDbContext(DbContextOptions<DemoDbContext> options)
         : base(options)
@@ -41,5 +44,6 @@ public class DemoDbContext : AbpDbContext<DemoDbContext>
         builder.ConfigurePermissionModel();
         builder.ConfigureRoleModel();
         builder.ConfigureUserModel();
+        builder.ConfigureBookModel();
     }
 }

@@ -20,6 +20,9 @@ using ZURU.Demo.Application;
 using ZURU.Demo.Domain;
 using System;
 using System.Reflection;
+using Autofac.Core;
+using Volo.Abp.AspNetCore.Mvc.AntiForgery;
+using System.Collections.Generic;
 
 namespace ZURU.Demo.Web;
 
@@ -59,6 +62,18 @@ public class DemoWebModule : AbpModule
         //ConfigureNavigationServices();
         ConfigureAutoApiControllers();
         ConfigureSwaggerServices(context.Services);
+
+
+
+        Configure<AbpAntiForgeryOptions>(options =>
+        {
+            options.TokenCookie.Expiration = TimeSpan.FromDays(365);
+            //options.AutoValidateIgnoredHttpMethods.Remove("GET");
+            options.AutoValidateFilter =
+                type => !type.Namespace.StartsWith("ZURU.Demo.Application");
+            //options.AutoValidateIgnoredHttpMethods = new HashSet<string> ["GET","POST"];
+        });
+
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -138,7 +153,7 @@ public class DemoWebModule : AbpModule
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
-                options.CustomSchemaIds(type => type.FullName);               
+                options.CustomSchemaIds(type => type.FullName);
             }
         );
     }
